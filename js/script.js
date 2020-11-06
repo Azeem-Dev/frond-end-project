@@ -1,4 +1,5 @@
-const listsContainer = document.query.Selector('[data-lists]')
+// It is querySelector not query.selector
+const listsContainer = document.querySelector('[data-lists]')
 const newListForm = document.querySelector('[data-new-list-form]')
 const newListInput = document.querySelector('[data-new-list-input]')
 const deleteListButton = document.querySelector('[data-delete-list-button]')
@@ -9,11 +10,14 @@ const tasksContainer = document.querySelector('[data-tasks]')
 const taskTemplate = document.getElementById('task-template')
 const newTaskForm = document.querySelector('[data-new-task-form]')
 const newTaskInput = document.querySelector('[data-new-task-input]')
-cons clearCompleteTasksButton = document.querySelector('[data-clear-complete-tasks-button]')
+
+// Here const was spelled as cons
+const clearCompleteTasksButton = document.querySelector('[data-clear-complete-tasks-button]')
 
 const LOCAL_STORAGE_LIST_KEY = 'task.lists'
 const LOCAL_STORAGE_SELECTED_LIST_ID_KEY = 'task.selectedListID'
-let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY) || []
+// In json.parse ) bracket was missing
+let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || []
 let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID_KEY)
 
 listsContainer.addEventListener('click', e =>{
@@ -26,7 +30,9 @@ listsContainer.addEventListener('click', e =>{
 tasksContainer.addEventListener('click', e => {
     if (e.target.tagName.toLowerCase() === 'input') {
         const selectedList = lists.find(list => list.id === selectedListId)
-        const selectedTask = selectedList.tasks.find(task => === e.target.id)
+        // what are you comparing Here ???
+        // it should be task.id according to the video
+        const selectedTask = selectedList.tasks.find(task =>task.id === e.target.id)
         selectedTask.complete = e.target.checked
         save()
         renderTaskCount(selectedList)
@@ -71,7 +77,11 @@ function createList(name) {
 }
 
 function createTask(name) {
-    return { id: Date.now().toString(), name: name, complete: false [] }
+    // false is a boolean not a array and wrong way to define objects let me clear this up
+    return { id: Date.now().toString(),
+             name: name,
+             complete: false,
+              }//[] }
 }
 
 
@@ -83,7 +93,8 @@ function save() {
 function render() {
     clearElement(listsContainer)
     renderLists()
-    const selectedList = lists.find(list  => listId === selectedListId)
+    // again not listId list.id
+    const selectedList = lists.find(list  => list.id === selectedListId)
 
     if (selectedListId == null) {
         listDisplayContainer.style.display = 'none'
@@ -119,7 +130,8 @@ function renderTaskCount(selectedList) {
 function renderLists () {
     lists.forEach(list => {
         const listElement = document.createElement('li')
-        listElement.dataset.listId = listId
+        // It is list.id not listId
+        listElement.dataset.listId = list.id
         listElement.classList.add("list-name")
         if (list.id === selectedListId) {
          listElement.classList.add(active-list)
@@ -135,4 +147,6 @@ function clearElement(element){
     }
 
 }
+
+// Where is saveAndRender Function???
 render()
